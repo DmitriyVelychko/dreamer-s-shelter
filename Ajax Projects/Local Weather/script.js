@@ -1,18 +1,18 @@
-var getWeather = function() {
+var getWeather = function () {
   var xhr = new XMLHttpRequest();
 
-  var getLocation = function() {
+  var getLocation = function () {
     xhr.open('GET', "http://ip-api.com/json", true);
-    xhr.onload = function() {
+    xhr.onload = function () {
       getWeatherInfo(JSON.parse(xhr.responseText).city);
     };
     xhr.send();
   }
 
-  var getWeatherInfo = function(city) {
+  var getWeatherInfo = function (city) {
     xhr.open('GET', "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=d3c2ac56d73054085acc65c023cc88e3", true);
 
-    xhr.onload = function() {
+    xhr.onload = function () {
       var data = JSON.parse(this.responseText)
       var weather = {
         city: data.name,
@@ -25,14 +25,14 @@ var getWeather = function() {
 
     }
 
-    xhr.onerror = function() {
+    xhr.onerror = function () {
       console.log('Ошибка ' + this.status);
     }
 
     xhr.send();
   }
 
-  var setWeather = function(options) {
+  var setWeather = function (options) {
     var temp = document.querySelector('.temp');
     document.querySelector('.city-info').innerHTML = options.city;
     document.querySelector('.country-info').innerHTML = options.country;
@@ -40,7 +40,7 @@ var getWeather = function() {
     document.querySelector('.description').innerHTML = options.description
     document.querySelector('.icon').src = options.icon;
 
-    document.querySelector('button').addEventListener('click', function() {
+    document.querySelector('button').addEventListener('click', function () {
       if (this.innerHTML === 'C') {
         temp.innerHTML = Math.round(temp.innerHTML * 9 / 5 + 32);
         this.innerHTML = 'F';
