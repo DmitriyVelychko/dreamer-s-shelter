@@ -3,22 +3,23 @@
 <head>
   <meta charset="utf-8">
   <title>Wikipedia Viewer</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../css/main.css">
 </head>
 
 <body>
+<a href="../" class="link link-home">Home</a>
 <div class="container">
-  <h1>Wikipedia Viewer </h1>
+  <div class="title">Wikipedia Viewer </div>
   <a href="https://en.wikipedia.org/wiki/Special:Random"
      target="_blank"
-     class="get-random">
+     class="link">
     Get Random Article
   </a>
-  <div class="search">
-    <input class="search-input"/>
-    <button class="search-btn">Find</button>
+  <div class="block">
+    <input class="input"/>
+    <button id="search" class="btn btn-long">Find</button>
   </div>
-  <div class="article-list"></div>
+  <div class="wrapper hide"></div>
 </div>
 <script src="script.js"></script>
 </body>

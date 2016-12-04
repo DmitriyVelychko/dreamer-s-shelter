@@ -13,7 +13,7 @@ const getJsonp = () => {
   };
 
   const getWiki = (data) => {
-    const articleList = document.querySelector('.article-list');
+    const articleList = document.querySelector('.wrapper');
     articleList.innerHTML = '';
     if (!data.query) {
       const err = document.createElement('p');
@@ -35,17 +35,18 @@ const getJsonp = () => {
         title.innerHTML = newData[i].title;
         info.innerHTML = newData[i].extract;
         articleList.appendChild(link);
+        articleList.className = "wrapper show";
         link.appendChild(title);
         link.appendChild(info);
       }
     }
   };
 
-  const inputField = document.querySelector('.search-input');
+  const inputField = document.querySelector('.input');
 
   const url = `https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=${inputField.value}&callback=JSON_CALLBACK`;
 
   jsonp(url, getWiki);
 };
 
-document.querySelector('.search-btn').addEventListener('click', getJsonp, false);
+document.querySelector('#search').addEventListener('click', getJsonp, false);
