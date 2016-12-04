@@ -11,8 +11,8 @@ var getQuote = function() {
     if(href.length > 101){
       href = href.slice(0, 100);
       href += "..."
-    }   
-    document.querySelector('.tweet').href = "https://twitter.com/intent/tweet?text=" + href + " (c) " + data[0].title; 
+    }
+    document.querySelector('.tweet').href = "https://twitter.com/intent/tweet?text=" + href + " (c) " + data[0].title;
   };
   xhr.send();
 }
@@ -21,7 +21,7 @@ var openURL = function() {
    event.preventDefault();
   var str = window.open(this.href, 'Twitter', 'width=550, height=400, toolbar=0, scrollbars=1 ,location=0 ,statusbar=0,menubar=0, resizable=0');
 }
-document.querySelector('.next-quote').addEventListener('click', getQuote, false);
+document.querySelector('#next-quote').addEventListener('click', getQuote, false);
 document.querySelector('.tweet').addEventListener('click', openURL, true);
 
 getQuote();
