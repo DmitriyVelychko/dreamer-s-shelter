@@ -1,0 +1,8 @@
+{
+  "name": "free-code-camp",
+  "version": "0.0.1",
+  "main": "index.html",
+  "repository": "git@github.com:DmitriyVelychko/free-code-camp.git",
+  "author": "Dmitriy Velychko <velychko.dmitriy@gmail.com>",
+  "license": "MIT"
+}

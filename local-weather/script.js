@@ -20,37 +20,36 @@ var getWeather = function () {
         description: data.weather[0].main,
         icon: "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png",
         temp: Math.round(data.main.temp - 273)
-      }
+      };
       setWeather(weather);
 
-    }
+    };
 
     xhr.onerror = function () {
-      console.log('Ошибка ' + this.status);
-    }
+      console.error('Error ' + this.status);
+    };
 
     xhr.send();
-  }
+  };
 
   var setWeather = function (options) {
-    var temp = document.querySelector('.temp');
-    document.querySelector('.city-info').innerHTML = options.city;
-    document.querySelector('.country-info').innerHTML = options.country;
-    temp.innerHTML = options.temp;
-    document.querySelector('.description').innerHTML = options.description
-    document.querySelector('.icon').src = options.icon;
+    var degree = document.querySelector('#degree');
+    document.querySelector('#city').innerHTML = options.city;
+    document.querySelector('#country').innerHTML = options.country;
+    degree.innerHTML = options.temp;
+    document.querySelector('#icon').src = options.icon;
 
-    document.querySelector('button').addEventListener('click', function () {
+    document.querySelector('#toggle-degree').addEventListener('click', function () {
       if (this.innerHTML === 'C') {
-        temp.innerHTML = Math.round(temp.innerHTML * 9 / 5 + 32);
+        degree.innerHTML = Math.round(degree.innerHTML * 9 / 5 + 32);
         this.innerHTML = 'F';
       } else if (this.innerHTML === 'F') {
-        temp.innerHTML = Math.round((temp.innerHTML - 32) * 5 / 9);
+        degree.innerHTML = Math.round((degree.innerHTML - 32) * 5 / 9);
         this.innerHTML = 'C';
       }
     }, false)
-  }
+  };
   getLocation()
-}
+};
 
-getWeather()
+getWeather();
