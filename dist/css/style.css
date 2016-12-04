@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Lobster);
 
-body {
+#root {
   display: flex;
   height: 100vh;
   background-color: #2C3E50;
@@ -101,8 +101,8 @@ ul,ol {
   border: 3px solid #fff;
   background: none;
   color: #fff;
-  font-family: Lobster;
-  border-radius: 0px;
+  font-family: Lobster, 'serif';
+  border-radius: 0;
   height: 32px;
   width: 200px;
   outline: none;
