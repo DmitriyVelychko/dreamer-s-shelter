@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './app/app';
+import router from './router';
 
 ReactDOM.render(
-  <App/>,
+  <div className="container">{router}</div>,
   document.getElementById('root')
 );

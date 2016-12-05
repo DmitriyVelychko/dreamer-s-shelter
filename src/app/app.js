@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 
 export default class App extends Component {
@@ -7,11 +8,11 @@ export default class App extends Component {
   }
 
   render() {
-    return <div className="container">
+    return <div>
       <h1 className="title">Ajax Projects</h1>
       <div className="wrapper">
         <ul className="linked-list">
-          <li><a className="link" href="local-weather">Local Weather</a></li>
+          <li><Link className="link" to="local-weather">Local Weather</Link></li>
           <li><a className="link" href="random-quote-machine">Random Quote Machine</a></li>
           <li><a className="link" href="wikipedia-viewer">Wikipedia Viewer</a></li>
         </ul>
