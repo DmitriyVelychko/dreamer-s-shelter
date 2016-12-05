@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
+import React, {Component} from 'react';
+import {Link} from 'react-router';
 
 
 export default class LocalWeather extends Component {
@@ -7,62 +7,61 @@ export default class LocalWeather extends Component {
     super(props);
   }
 
-  componentWillMount() {
-    var getWeather = function () {
-      var xhr = new XMLHttpRequest();
+  _getLocation() {
+    fetch('http://ip-api.com/json')
+      .then(res => res.text())
+      .then(
+        body => {
+          this._getWeatherInfo(JSON.parse(body).city);
+        }
+      );
+  }
 
-      var getLocation = function () {
-        xhr.open('GET', "http://ip-api.com/json", true);
-        xhr.onload = function () {
-          getWeatherInfo(JSON.parse(xhr.responseText).city);
-        };
-        xhr.send();
-      };
-
-      var getWeatherInfo = function (city) {
-        xhr.open('GET', "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=d3c2ac56d73054085acc65c023cc88e3", true);
-
-        xhr.onload = function () {
-          var data = JSON.parse(this.responseText)
-          var weather = {
+  _getWeatherInfo(city) {
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=d3c2ac56d73054085acc65c023cc88e3`)
+      .then(
+        res => res.text()
+      )
+      .then(
+        body => {
+          const data = JSON.parse(body);
+          this._setWeather({
             city: data.name,
             country: data.sys.country,
             description: data.weather[0].main,
-            icon: "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png",
+            icon: `http://openweathermap.org/img/w/${data.weather[0].icon}.png`,
             temp: Math.round(data.main.temp - 273)
-          };
-          setWeather(weather);
+          });
+        }
+      );
+  }
 
-        };
+  _setWeather(weather) {
+    const degree = document.querySelector('#degree');
+    document.getElementById('city').innerHTML = weather.city;
+    document.getElementById('country').innerHTML = weather.country;
+    degree.innerHTML = weather.temp;
+    document.getElementById('icon').src = weather.icon;
 
-        xhr.onerror = function () {
-          console.error('Error ' + this.status);
-        };
-
-        xhr.send();
-      };
-
-      var setWeather = function (options) {
-        var degree = document.querySelector('#degree');
-        document.querySelector('#city').innerHTML = options.city;
-        document.querySelector('#country').innerHTML = options.country;
-        degree.innerHTML = options.temp;
-        document.querySelector('#icon').src = options.icon;
-
-        document.querySelector('#toggle-degree').addEventListener('click', function () {
-          if (this.innerHTML === 'C') {
+    document.getElementById('toggle-degree')
+      .addEventListener('click', () => {
+        switch (this.innerHTML) {
+          case 'C':
             degree.innerHTML = Math.round(degree.innerHTML * 9 / 5 + 32);
             this.innerHTML = 'F';
-          } else if (this.innerHTML === 'F') {
+            break;
+          case 'F':
             degree.innerHTML = Math.round((degree.innerHTML - 32) * 5 / 9);
             this.innerHTML = 'C';
-          }
-        }, false)
-      };
-      getLocation()
-    };
+            break;
+          default:
+            break;
+        }
+      }, false)
+  }
 
-    getWeather();
+  componentWillMount() {
+    this._getLocation()
   }
 
   render() {
