@@ -3,10 +3,6 @@ import { Link } from 'react-router';
 
 
 export default class App extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return <div>
       <h1 className="title">Ajax Projects</h1>

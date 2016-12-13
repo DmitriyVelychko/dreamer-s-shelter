@@ -1,11 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Lobster);
 
-#root {
-  display: flex;
-  height: 100vh;
+body {
+  min-height: 100vh;
   background-color: #2C3E50;
   font-family: Lobster, 'sans-serif';
   text-shadow: 1px 1px 1px rgba(20, 20, 20, .3);
+}
+
+#root {
+  display: flex;
+  height: 100vh;
 }
 
 * {
