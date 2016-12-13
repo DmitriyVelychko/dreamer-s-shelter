@@ -1,0 +1,50 @@
+.simon {
+  width: 420px;
+  height: 420px;
+  border-radius: 100%;
+  display: flex;
+  margin: 50px auto;
+  border: 10px solid #333;
+}
+
+.led {
+  transition: all .5s ease-in-out;
+  height: 200px;
+  width: 200px;
+}
+
+.red {
+  background-color: #f44842;
+  border-top-left-radius: 100%;
+}
+
+.red:hover {
+  background-color: #ff3030;
+}
+
+.green {
+  background-color: #42f45f;
+  border-top-right-radius: 100%;
+}
+
+.green:hover {
+  background-color: #30ff30;
+}
+
+.blue {
+  background-color: #1b95e0;
+  border-bottom-right-radius: 100%;
+}
+
+.blue:hover {
+  background-color: #0c7abf;
+}
+
+.yellow {
+  background-color: khaki;
+  border-bottom-left-radius: 100%;
+}
+
+.yellow:hover {
+  background-color: lemonchiffon;
+}
