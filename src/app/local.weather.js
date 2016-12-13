@@ -3,9 +3,6 @@ import {Link} from 'react-router';
 
 
 export default class LocalWeather extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   _getLocation() {
     fetch('http://ip-api.com/json')

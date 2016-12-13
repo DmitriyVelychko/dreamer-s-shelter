@@ -34,11 +34,11 @@ ul,ol {
 .wrapper {
   padding: 15px;
   height: auto;
-  /*background-color: #16A085;*/
+  background-color: #16A085;
   text-align: center;
   margin: auto;
   font-weight: bold;
-  /*box-shadow: 5px 5px 1px 0 rgba(0, 0, 0, 0.3);*/
+  box-shadow: 5px 5px 1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .wiki-info {

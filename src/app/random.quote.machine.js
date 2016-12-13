@@ -3,9 +3,6 @@ import { Link } from 'react-router';
 
 
 export default class RandomQuoteMachine extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   _getQuote() {
     const quoteId = Math.round(Math.random() * 1000);
