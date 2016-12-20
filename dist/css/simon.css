@@ -15,36 +15,29 @@
 
 .red {
   background-color: #f44842;
+  opacity: .7;
   border-top-left-radius: 100%;
-}
-
-.red:hover {
-  background-color: #ff3030;
 }
 
 .green {
   background-color: #42f45f;
+  opacity: .7;
   border-top-right-radius: 100%;
 }
 
-.green:hover {
-  background-color: #30ff30;
-}
 
 .blue {
   background-color: #1b95e0;
+  opacity: .7;
   border-bottom-right-radius: 100%;
-}
-
-.blue:hover {
-  background-color: #0c7abf;
 }
 
 .yellow {
   background-color: khaki;
+  opacity: .7;
   border-bottom-left-radius: 100%;
 }
 
-.yellow:hover {
-  background-color: lemonchiffon;
+.yellow:hover, .red:hover, .blue:hover, .green:hover {
+  opacity: 1;
 }
