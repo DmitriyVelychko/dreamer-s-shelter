@@ -16,6 +16,7 @@ export default class App extends Component {
         <h2 className="title">Advanced</h2>
         <ul className="linked-list">
           <li><Link className="link" to="/simon-game">Simon Game</Link></li>
+          <li><Link className="link" to="/pomodoro-timer">Pomodoro Timer</Link></li>
         </ul>
       </div>
     </div>

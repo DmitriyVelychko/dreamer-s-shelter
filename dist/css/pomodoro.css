@@ -1,0 +1,23 @@
+.timer-control {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
+
+.timer-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.clock {
+  border: 5px solid #fff;
+  display: flex;
+  width: 200px;
+  height: 80px;
+  margin: 0 auto;
+}
+
+.time {
+  margin: auto;
+}
