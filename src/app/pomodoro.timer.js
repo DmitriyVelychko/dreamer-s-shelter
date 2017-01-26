@@ -5,6 +5,21 @@ import { Link } from 'react-router';
 export default class PomodoroTimer extends Component {
   constructor(props) {
     super(props);
+    this.state = { workTime: 25, restTime: 5 };
+
+    this.changeWorkTime = this.changeWorkTime.bind(this);
+    this.changeRestTime = this.changeRestTime.bind(this);
+
+  }
+
+  changeWorkTime(time) {
+    const workTime = this.state.workTime += time;
+    this.setState({ workTime });
+  }
+
+  changeRestTime(time) {
+    const restTime = this.state.restTime += time;
+    this.setState({ restTime });
   }
 
   render() {
@@ -14,20 +29,23 @@ export default class PomodoroTimer extends Component {
       <div className="wrapper">
         <div className="timer-control">
           <div className="timer-group">
-            <button className="btn">-</button>
-            <div>5</div>
-            <button className="btn">+</button>
+            <button className="btn" onClick={() => this.changeRestTime(-1)}>-</button>
+            <div>{this.state.restTime}</div>
+            <button className="btn" onClick={() => this.changeRestTime(1)}>+</button>
           </div>
           <div className="timer-group">
-            <button className="btn">-</button>
-            <div>25</div>
-            <button className="btn">+</button>
+            <button className="btn" onClick={() => this.changeWorkTime(-5)}>-</button>
+            <div>{this.state.workTime}</div>
+            <button className="btn" onClick={() => this.changeWorkTime(5)}>+</button>
           </div>
         </div>
         <div className="clock">
           <div className="time">
-            25:00
+            {this.state.workTime}
           </div>
+        </div>
+        <div>
+          <button className="btn btn-long">Start</button>
         </div>
       </div>
     </div>
