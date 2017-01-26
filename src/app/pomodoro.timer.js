@@ -14,8 +14,10 @@ export default class PomodoroTimer extends Component {
 
   changeWorkTime(time) {
     const workTime = this.state.workTime += time;
-    this.setState({ workTime });
-    this.setState({ pomodoroMinutes: this.state.workTime });
+    this.setState({
+      workTime,
+      pomodoroMinutes: workTime
+    });
   }
 
   changeRestTime(time) {
@@ -24,22 +26,29 @@ export default class PomodoroTimer extends Component {
   }
 
   startTimer() {
-    this.setState({ pomodoroMinutes: this.state.workTime - 1 });
-    this.setState({ pomodoroSeconds: 59 });
-    const timer = setInterval(() => {
+    const second = 1000;
+    const resetMinute = 59;
+    this.setState({
+      pomodoroMinutes: this.state.workTime - 1,
+      pomodoroSeconds: resetMinute
+    });
+
+    const pomodoroClock = setInterval(() => {
       const pomodoroSeconds = this.state.pomodoroSeconds -= 1;
       if (pomodoroSeconds < 0) {
-        if(this.state.pomodoroMinutes > 0) {
-          this.setState({ pomodoroSeconds: 59 });
-          this.setState({ pomodoroMinutes: this.state.pomodoroMinutes - 1 });
+        if (this.state.pomodoroMinutes > 0) {
+          this.setState({
+            pomodoroSeconds: resetMinute,
+            pomodoroMinutes: this.state.pomodoroMinutes - 1
+          });
         }
         else {
-          clearInterval(timer);
+          clearInterval(pomodoroClock);
         }
         return
       }
       this.setState({ pomodoroSeconds });
-    }, 1000);
+    }, second);
   }
 
   render() {
