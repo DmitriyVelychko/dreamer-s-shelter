@@ -1,54 +1,71 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
+const defaultSetup = {
+  workTime: 25,
+  restTime: 5,
+  pomodoroSeconds: 0,
+  pomodoroMinutes: 25,
+  isWork: true,
+};
 
 export default class PomodoroTimer extends Component {
   constructor(props) {
     super(props);
-    this.state = { workTime: 25, restTime: 5, pomodoroSeconds: 0, pomodoroMinutes: 25 };
+    this.state = Object.assign({}, defaultSetup);
 
     this.changeWorkTime = this.changeWorkTime.bind(this);
     this.changeRestTime = this.changeRestTime.bind(this);
     this.startTimer = this.startTimer.bind(this);
+    this.runTimer = this.runTimer.bind(this);
   }
 
   changeWorkTime(time) {
     const workTime = this.state.workTime += time;
     this.setState({
-      workTime,
-      pomodoroMinutes: workTime
+      workTime
     });
+    if (this.state.isWork) {
+      this.setState({ pomodoroMinutes: workTime });
+    }
   }
 
   changeRestTime(time) {
     const restTime = this.state.restTime += time;
     this.setState({ restTime });
+    if (!this.state.isWork) {
+      this.setState({ pomodoroMinutes: restTime });
+    }
   }
 
-  startTimer() {
+  runTimer() {
     const second = 1000;
     const resetMinute = 59;
-    this.setState({
-      pomodoroMinutes: this.state.workTime - 1,
-      pomodoroSeconds: resetMinute
-    });
-
+    this.setState({ pomodoroSeconds: resetMinute });
     const pomodoroClock = setInterval(() => {
       const pomodoroSeconds = this.state.pomodoroSeconds -= 1;
       if (pomodoroSeconds < 0) {
         if (this.state.pomodoroMinutes > 0) {
           this.setState({
             pomodoroSeconds: resetMinute,
-            pomodoroMinutes: this.state.pomodoroMinutes - 1
+            pomodoroMinutes: this.state.pomodoroMinutes - 1,
           });
         }
         else {
           clearInterval(pomodoroClock);
+          this.setState({ isWork: !this.state.isWork });
+          this.startTimer();
         }
         return
       }
       this.setState({ pomodoroSeconds });
     }, second);
+  }
+
+  startTimer() {
+    const startUpMode = this.state.isWork ? this.state.workTime : this.state.restTime;
+    this.setState({ pomodoroMinutes: startUpMode - 1 });
+    this.runTimer();
   }
 
   render() {
