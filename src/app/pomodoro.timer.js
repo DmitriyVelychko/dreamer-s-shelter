@@ -7,6 +7,7 @@ const defaultSetup = {
   pomodoroSeconds: 0,
   pomodoroMinutes: 25,
   isWork: true,
+  isPaused: false,
 };
 
 export default class PomodoroTimer extends Component {
@@ -16,8 +17,9 @@ export default class PomodoroTimer extends Component {
 
     this.changeWorkTime = this.changeWorkTime.bind(this);
     this.changeRestTime = this.changeRestTime.bind(this);
-    this.startTimer = this.startTimer.bind(this);
     this.runTimer = this.runTimer.bind(this);
+    this.pausePomodoro = this.pausePomodoro.bind(this);
+    this.runPomodoro = this.runPomodoro.bind(this);
   }
 
   changeWorkTime(time) {
@@ -41,8 +43,11 @@ export default class PomodoroTimer extends Component {
   runTimer() {
     const second = 1000;
     const resetMinute = 59;
-    this.setState({ pomodoroSeconds: resetMinute });
-    const pomodoroClock = setInterval(() => {
+    if(!this.state.isPaused){
+      this.setState({ pomodoroSeconds: resetMinute });
+    }
+    this.setState({isPaused: false});
+      this.timer = setInterval(() => {
       const pomodoroSeconds = this.state.pomodoroSeconds -= 1;
       if (pomodoroSeconds < 0) {
         if (this.state.pomodoroMinutes > 0) {
@@ -52,7 +57,7 @@ export default class PomodoroTimer extends Component {
           });
         }
         else {
-          clearInterval(pomodoroClock);
+          clearInterval(this.timer);
           this.setState({ isWork: !this.state.isWork });
           this.startTimer();
         }
@@ -62,9 +67,16 @@ export default class PomodoroTimer extends Component {
     }, second);
   }
 
-  startTimer() {
-    const startUpMode = this.state.isWork ? this.state.workTime : this.state.restTime;
-    this.setState({ pomodoroMinutes: startUpMode - 1 });
+  pausePomodoro() {
+   clearInterval(this.timer);
+   this.setState({isPaused: true})
+  }
+
+  runPomodoro() {
+    if(!this.state.isPaused) {
+      const startUpMode = this.state.isWork ? this.state.workTime : this.state.restTime;
+      this.setState({ pomodoroMinutes: startUpMode - 1 });
+    }
     this.runTimer();
   }
 
@@ -91,7 +103,8 @@ export default class PomodoroTimer extends Component {
           </div>
         </div>
         <div>
-          <button className="btn btn-long" onClick={this.startTimer}>Start</button>
+          <button className="btn btn-long" onClick={this.runPomodoro}>Start</button>
+          <button className="btn btn-long" onClick={this.pausePomodoro}>Stop</button>
         </div>
       </div>
     </div>

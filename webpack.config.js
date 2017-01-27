@@ -16,5 +16,5 @@ module.exports = {
     inline: true,
     contentBase: './dist',
   },
-  devtool: '#eval-inline-source-map'
+  devtool: '#eval-inline-source-map',
 };
