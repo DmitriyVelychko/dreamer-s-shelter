@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 
 const defaultSetup = {
-  workTime: 1,
+  workTime: 25,
   restTime: 5,
   pomodoroSeconds: 0,
   pomodoroMinutes: 25,
@@ -110,8 +110,12 @@ export default class PomodoroTimer extends Component {
           </div>
         </div>
         <div>
-          <button className="btn btn-long" onClick={this.runPomodoro}>Start</button>
-          <button className="btn btn-long" onClick={this.pausePomodoro}>Stop</button>
+          <button className="btn btn-long"
+                  disabled={this.state.isClocking}
+                  onClick={this.runPomodoro}>Start</button>
+          <button className="btn btn-long"
+                  disabled={!this.state.isClocking}
+                  onClick={this.pausePomodoro}>Stop</button>
         </div>
       </div>
     </div>
