@@ -23,7 +23,10 @@ export default class PomodoroTimer extends Component {
   }
 
   changePomodoroTime(timeMode, value) {
-    const pomodoroTime = this.state[timeMode] += value;
+    const pomodoroTime = this.state[timeMode] + value;
+    if(this.state[timeMode] + value <= 0) {
+      return
+    }
     this.setState({ [timeMode]: pomodoroTime });
     if (this.state.isWork && timeMode === 'workTime' || !this.state.isWork && timeMode === 'restTime') {
       this.setState({ pomodoroMinutes: pomodoroTime });
