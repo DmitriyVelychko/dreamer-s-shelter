@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 
 const defaultSetup = {
-  workTime: 25,
+  workTime: 1,
   restTime: 5,
   pomodoroSeconds: 0,
   pomodoroMinutes: 25,
   isWork: true,
   isPaused: false,
+  isClocking: false,
 };
 
 export default class PomodoroTimer extends Component {
@@ -15,39 +16,28 @@ export default class PomodoroTimer extends Component {
     super(props);
     this.state = Object.assign({}, defaultSetup);
 
-    this.changeWorkTime = this.changeWorkTime.bind(this);
-    this.changeRestTime = this.changeRestTime.bind(this);
+    this.changePomodoroTime = this.changePomodoroTime.bind(this);
     this.runTimer = this.runTimer.bind(this);
     this.pausePomodoro = this.pausePomodoro.bind(this);
     this.runPomodoro = this.runPomodoro.bind(this);
   }
 
-  changeWorkTime(time) {
-    const workTime = this.state.workTime += time;
-    this.setState({
-      workTime
-    });
-    if (this.state.isWork) {
-      this.setState({ pomodoroMinutes: workTime });
-    }
-  }
-
-  changeRestTime(time) {
-    const restTime = this.state.restTime += time;
-    this.setState({ restTime });
-    if (!this.state.isWork) {
-      this.setState({ pomodoroMinutes: restTime });
+  changePomodoroTime(timeMode, value) {
+    const pomodoroTime = this.state[timeMode] += value;
+    this.setState({ [timeMode]: pomodoroTime });
+    if (this.state.isWork && timeMode === 'workTime' || !this.state.isWork && timeMode === 'restTime') {
+      this.setState({ pomodoroMinutes: pomodoroTime });
     }
   }
 
   runTimer() {
     const second = 1000;
     const resetMinute = 59;
-    if(!this.state.isPaused){
+    if (!this.state.isPaused) {
       this.setState({ pomodoroSeconds: resetMinute });
     }
-    this.setState({isPaused: false});
-      this.timer = setInterval(() => {
+    this.setState({ isClocking: true, isPaused: false });
+    this.timer = setInterval(() => {
       const pomodoroSeconds = this.state.pomodoroSeconds -= 1;
       if (pomodoroSeconds < 0) {
         if (this.state.pomodoroMinutes > 0) {
@@ -58,8 +48,8 @@ export default class PomodoroTimer extends Component {
         }
         else {
           clearInterval(this.timer);
-          this.setState({ isWork: !this.state.isWork });
-          this.startTimer();
+          this.setState({ isClocking: false , isWork: !this.state.isWork });
+          this.runPomodoro();
         }
         return
       }
@@ -68,12 +58,13 @@ export default class PomodoroTimer extends Component {
   }
 
   pausePomodoro() {
-   clearInterval(this.timer);
-   this.setState({isPaused: true})
+    clearInterval(this.timer);
+    this.setState({ isPaused: true });
+    this.setState({ isClocking: false });
   }
 
   runPomodoro() {
-    if(!this.state.isPaused) {
+    if (!this.state.isPaused) {
       const startUpMode = this.state.isWork ? this.state.workTime : this.state.restTime;
       this.setState({ pomodoroMinutes: startUpMode - 1 });
     }
@@ -87,14 +78,30 @@ export default class PomodoroTimer extends Component {
       <div className="wrapper">
         <div className="timer-control">
           <div className="timer-group">
-            <button className="btn" onClick={() => this.changeRestTime(-1)}>-</button>
+            <button className="btn"
+                    disabled={this.state.isClocking}
+                    onClick={() => this.changePomodoroTime('restTime', -1)}>
+              -
+            </button>
             <div>{this.state.restTime}</div>
-            <button className="btn" onClick={() => this.changeRestTime(1)}>+</button>
+            <button className="btn"
+                    disabled={this.state.isClocking}
+                    onClick={() => this.changePomodoroTime('restTime', 1)}>
+              +
+            </button>
           </div>
           <div className="timer-group">
-            <button className="btn" onClick={() => this.changeWorkTime(-5)}>-</button>
+            <button className="btn"
+                    disabled={this.state.isClocking}
+                    onClick={() => this.changePomodoroTime('workTime', -5)}>
+              -
+            </button>
             <div>{this.state.workTime}</div>
-            <button className="btn" onClick={() => this.changeWorkTime(5)}>+</button>
+            <button className="btn"
+                    disabled={this.state.isClocking}
+                    onClick={() => this.changePomodoroTime('workTime', 5)}>
+              +
+            </button>
           </div>
         </div>
         <div className="clock">
