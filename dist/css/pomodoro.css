@@ -10,14 +10,96 @@
   align-items: center;
 }
 
-.clock {
-  border: 5px solid #fff;
-  display: flex;
-  width: 200px;
-  height: 80px;
-  margin: 0 auto;
+.timer-group .btn {
+  margin: 0;
 }
 
 .time {
   margin: auto;
+  font-size: 40px;
+}
+
+.time-set {
+  width: 50px;
+  font-size: 20px;
+}
+
+.tomato-wrapper {
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+}
+
+#tomato {
+  background: #FF6347;
+  height: 110px;
+  width: 230px;
+  border-radius: 0 0 100px 100px;
+  position: relative;
+  margin: 10px auto;
+}
+
+#tomato::before {
+  content: "";
+  width: 118px;
+  height: 60px;
+  border: 1px solid #FF6347;
+  background: #FF6347;
+  position: absolute;
+  border-radius: 30px 58px 0 0;
+  top: -60px;
+  right: 0;
+}
+
+#tomato::after {
+  content: "";
+  width: 115px;
+  height: 60px;
+  border: 1px solid #FF6347;
+  background: #FF6347;
+  position: absolute;
+  border-radius: 60px 30px 0 0;
+  top: -60px;
+  left: 0;
+}
+
+#tomatoTop {
+  background: #A8B848;
+  height: 40px;
+  width: 20px;
+  border-radius: 20px 0 20px 0;
+  position: absolute;
+  transform: rotateZ(130deg);
+  top: -83px;
+  z-index: 1;
+  left: 96px;
+  transition: all .2s ease-in-out;
+}
+
+#tomatoTop::before {
+  content: "";
+  background: #A8B848;
+  height: 32px;
+  width: 15px;
+  border-radius: 23px 0 16px 0;
+  position: absolute;
+  z-index: 1;
+  transform: rotateZ(133deg);
+  top: 4px;
+  right: -16px;
+  transition: all .2s ease-in-out;
+}
+
+#tomatoTop::after {
+  content: "";
+  background: #A8B848;
+  height: 34px;
+  width: 16px;
+  border-radius: 16px 0 16px 0;
+  position: absolute;
+  z-index: 1;
+  transform: rotateZ(90deg);
+  top: -21px;
+  right: 13px;
+  transition: all .2s ease-in-out;
 }

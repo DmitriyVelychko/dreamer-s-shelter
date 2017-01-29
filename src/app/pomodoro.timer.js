@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 const defaultSetup = {
   workTime: 25,
   restTime: 5,
-  pomodoroSeconds: 0,
+  pomodoroSeconds: '00',
   pomodoroMinutes: 25,
   isWork: true,
   isPaused: false,
@@ -83,13 +83,21 @@ export default class PomodoroTimer extends Component {
       <div className="title">Pomodoro Timer</div>
       <div className="wrapper">
         <div className="timer-control">
+          <div>
+            Rest Time:
+          </div>
+          <div>
+            Work Time:
+          </div>
+        </div>
+        <div className="timer-control">
           <div className="timer-group">
             <button className="btn"
                     disabled={this.state.isClocking}
                     onClick={() => this.changePomodoroTime('restTime', -1)}>
               -
             </button>
-            <div>{this.state.restTime}</div>
+            <div className="time-set">{this.state.restTime}</div>
             <button className="btn"
                     disabled={this.state.isClocking}
                     onClick={() => this.changePomodoroTime('restTime', 1)}>
@@ -102,7 +110,7 @@ export default class PomodoroTimer extends Component {
                     onClick={() => this.changePomodoroTime('workTime', -5)}>
               -
             </button>
-            <div>{this.state.workTime}</div>
+            <div className="time-set">{this.state.workTime}</div>
             <button className="btn"
                     disabled={this.state.isClocking}
                     onClick={() => this.changePomodoroTime('workTime', 5)}>
@@ -110,9 +118,12 @@ export default class PomodoroTimer extends Component {
             </button>
           </div>
         </div>
-        <div className="clock">
-          <div className="time">
-            {this.state.pomodoroMinutes} : {this.state.pomodoroSeconds}
+        <div className="tomato-wrapper">
+          <div id="tomato">
+            <div id="tomatoTop"></div>
+              <div className="time">
+                {this.state.pomodoroMinutes} : {this.state.pomodoroSeconds}
+              </div>
           </div>
         </div>
         <div>
