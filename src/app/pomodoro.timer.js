@@ -41,7 +41,7 @@ export default class PomodoroTimer extends Component {
     }
     this.setState({ isClocking: true, isPaused: false });
     this.timer = setInterval(() => {
-      const pomodoroSeconds = this.state.pomodoroSeconds -= 1;
+      let pomodoroSeconds = +(this.state.pomodoroSeconds) - 1;
       if (pomodoroSeconds < 0) {
         if (this.state.pomodoroMinutes > 0) {
           this.setState({
@@ -55,6 +55,9 @@ export default class PomodoroTimer extends Component {
           this.runPomodoro();
         }
         return
+      }
+      if(pomodoroSeconds < 10) {
+        pomodoroSeconds = `0${pomodoroSeconds}`;
       }
       this.setState({ pomodoroSeconds });
     }, second);

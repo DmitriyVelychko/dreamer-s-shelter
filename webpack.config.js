@@ -1,10 +1,9 @@
 module.exports = {
-  context: __dirname + '/src',
-  entry: './main.js',
+  entry: './src/main.js',
   output: {
-    path: __dirname + '/dist/js',
+    path: `${__dirname}/dist/js`,
     publicPath: 'js/',
-    filename: 'script.js'
+    filename: 'script.js',
   },
   module: {
     loaders: [{
