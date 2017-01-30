@@ -17,7 +17,18 @@ export default class SimonGame extends Component {
   }
 
   runGame() {
-    //here will be promises
+    const enlight = (color) => {
+      return new Promise((resolve) => {
+        this.setState({ [color]: !this.state[color] });
+        setTimeout(() => {
+          this.setState({ [color]: !this.state[color] });
+          resolve();
+        }, 1000);
+      });
+
+    };
+    this.state.game.reduce((acc, colors) =>
+      acc.then(() => enlight(colors)), Promise.resolve());
   }
 
   render() {
