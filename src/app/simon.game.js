@@ -16,8 +16,8 @@ export default class SimonGame extends Component {
     this.runGame = this.runGame.bind(this);
   }
 
-  updateLightChain(){
-    const colorPick = Math.floor(Math.random()*100);
+  updateLightChain() {
+    const colorPick = Math.floor(Math.random() * 100);
     switch (true) {
       case (colorPick < 25):
         this.state.game.push('green');
@@ -36,15 +36,29 @@ export default class SimonGame extends Component {
     }
   }
 
+  gamePick(color) {
+    if (color === this.state.game[0]){
+      this.state.game.shift();
+      if(!this.state.game.length) {
+        console.info('You win');
+      }
+    } else {
+      this.setState({game: []});
+      console.error('You lose');
+    }
+  }
+
   runGame() {
     this.updateLightChain();
     const enlight = (color) => {
       return new Promise((resolve) => {
-        this.setState({ [color]: !this.state[color] });
+        setTimeout(() => {
+          this.setState({ [color]: !this.state[color] });
+        }, 1000);
         setTimeout(() => {
           this.setState({ [color]: !this.state[color] });
           resolve();
-        }, 1000);
+        }, 2000);
       });
 
     };
@@ -58,8 +72,12 @@ export default class SimonGame extends Component {
       <div className="title">Simon Game</div>
       <div className="simon">
         <div className="left">
-          <div className={this.state.red ? "led red highlight" : "led red"}></div>
-          <div className={this.state.yellow ? "led yellow highlight" : "led yellow"}></div>
+          <div className={this.state.red ? "led red highlight" : "led red"}
+               onClick={() => this.gamePick('red')}>
+          </div>
+          <div className={this.state.yellow ? "led yellow highlight" : "led yellow"}
+               onClick={() => this.gamePick('yellow')}>
+          </div>
         </div>
         <div className="simon-control">
           <div className="title">Simon</div>
@@ -68,8 +86,12 @@ export default class SimonGame extends Component {
           </div>
         </div>
         <div className="right">
-          <div className={this.state.green ? "led green highlight" : "led green"}></div>
-          <div className={this.state.blue ? "led blue highlight" : "led blue"}></div>
+          <div className={this.state.green ? "led green highlight" : "led green"}
+               onClick={() => this.gamePick('green')}>
+          </div>
+          <div className={this.state.blue ? "led blue highlight" : "led blue"}
+               onClick={() => this.gamePick('blue')}>
+          </div>
         </div>
       </div>
     </div>
