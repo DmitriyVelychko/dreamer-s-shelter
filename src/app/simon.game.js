@@ -6,7 +6,7 @@ export default class SimonGame extends Component {
     super();
 
     this.state = {
-      game: ['red', 'blue', 'green'],
+      game: [],
       red: false,
       green: false,
       blue: false,
@@ -16,7 +16,28 @@ export default class SimonGame extends Component {
     this.runGame = this.runGame.bind(this);
   }
 
+  updateLightChain(){
+    const colorPick = Math.floor(Math.random()*100);
+    switch (true) {
+      case (colorPick < 25):
+        this.state.game.push('green');
+        break;
+      case (colorPick >= 25 && colorPick < 50):
+        this.state.game.push('red');
+        break;
+      case (colorPick >= 50 && colorPick < 75):
+        this.state.game.push('blue');
+        break;
+      case (colorPick >= 75 && colorPick < 100):
+        this.state.game.push('yellow');
+        break;
+      default:
+        break;
+    }
+  }
+
   runGame() {
+    this.updateLightChain();
     const enlight = (color) => {
       return new Promise((resolve) => {
         this.setState({ [color]: !this.state[color] });
