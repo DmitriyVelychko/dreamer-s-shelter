@@ -182,6 +182,7 @@ ul,ol {
   font-size: 18px;
   font-style: italic;
   min-height: 100px;
+  padding: 15px 35px;
 }
 
 .navigate {
@@ -208,9 +209,11 @@ ul,ol {
   transition: all .3s ease-in-out;
 }
 
-#tweet i {
+#tweet span::before {
+  content: '';
   position: relative;
   top: 2px;
+  right: 3px;
   display: inline-block;
   width: 14px;
   height: 14px;

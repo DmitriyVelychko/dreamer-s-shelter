@@ -7,7 +7,7 @@ export default class LocalWeather extends Component {
   constructor() {
     super();
     this.state = {
-      degree: '',
+      degree: '#',
       degreeScale: 'C',
       city: 'city',
       country: 'country',
@@ -16,32 +16,29 @@ export default class LocalWeather extends Component {
     this.toggleDegree = this.toggleDegree.bind(this);
   }
 
-  getLocation() {
-    fetch('http://ip-api.com/json')
-      .then(res => res.text())
-      .then(
-        body => {
-          this.getWeatherInfo(JSON.parse(body).city);
-        }
-      );
+  componentWillMount() {
+    this.fetchWeatherByLocation();
   }
 
-  getWeatherInfo(city) {
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=d3c2ac56d73054085acc65c023cc88e3`)
-      .then(
-        res => res.text()
-      )
-      .then(
-        body => {
-          const data = JSON.parse(body);
-          this.setState({
-            degree: Math.round(data.main.temp - 273),
-            city: data.name,
-            country: data.sys.country,
-            icon: `http://openweathermap.org/img/w/${data.weather[0].icon}.png`
-          });
-        }
-      );
+  fetchWeatherByLocation() {
+    fetch('http://ip-api.com/json')
+      .then(res => res.text())
+      .then((body) => {
+        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${JSON.parse(body).city}&APPID=d3c2ac56d73054085acc65c023cc88e3`)
+          .then(res => res.text())
+          .then((body) => {
+            this.setWeatherCondition(JSON.parse(body))
+          })
+      });
+  }
+
+  setWeatherCondition(data) {
+    this.setState({
+      degree: Math.round(data.main.temp - 273),
+      city: data.name,
+      country: data.sys.country,
+      icon: `http://openweathermap.org/img/w/${data.weather[0].icon}.png`
+    });
   }
 
   toggleDegree() {
@@ -59,9 +56,6 @@ export default class LocalWeather extends Component {
     }
   }
 
-  componentWillMount() {
-    this.getLocation();
-  }
 
   render() {
     return <div>
@@ -69,12 +63,11 @@ export default class LocalWeather extends Component {
       <div className="title">Local Weather Info</div>
       <div className="wrapper">
         <div className="subtitle">
-          <span id="city">{this.state.city}</span>,
-          <span id="country">{this.state.country}</span>
+          <span>{this.state.city}</span>, <span>{this.state.country}</span>
         </div>
         <div className="temperature">
           <div className="degrees">
-            <div id="degree">{this.state.degree}</div>
+            <div>{this.state.degree}</div>
             <button className="btn" onClick={this.toggleDegree}>{this.state.degreeScale}</button>
           </div>
           <img className="icon" id="icon" src={this.state.icon} alt="Icon" />
