@@ -18,7 +18,6 @@ export default class SimonGame extends Component {
       green: false,
       blue: false,
       yellow: false,
-      isGame: false,
       isGameChaining: false,
     };
 
@@ -47,11 +46,9 @@ export default class SimonGame extends Component {
   }
 
   gamePick(color) {
-    this.setState({isGameChaining: !this.state.isGameChaining});
     const finalRound = this.state.game.length === 10;
     this.setState({ [color]: !this.state[color] });
     setTimeout(() => {
-      this.setState({isGameChaining: !this.state.isGameChaining});
       this.setState({ [color]: !this.state[color] });
       if (color === this.state.game[this.counter()]) {
         if (finalRound) {
@@ -68,20 +65,35 @@ export default class SimonGame extends Component {
 
   runGame() {
     this.updateLightChain();
-    const enlight = (color) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          this.setState({ [color]: !this.state[color] });
-        }, 1000);
-        setTimeout(() => {
-          this.setState({ [color]: !this.state[color] });
-          resolve();
-        }, 2000);
-      });
+    this.setState({ isGameChaining: "started" });
+    const promises = [];
 
+    const enlight = (color) => {
+      const light = new Promise((resolve) => {
+        setTimeout(() => {
+          this.setState({ [color]: !this.state[color] });
+          setTimeout(() => {
+            this.setState({ [color]: !this.state[color] });
+            resolve();
+          }, 2000);
+        }, 1000);
+      });
+      promises.push(light);
+      return light;
     };
-    this.state.game.reduce((acc, colors) =>
-      acc.then(() => enlight(colors)), Promise.resolve());
+    const qq = new Promise((r) => {
+      this.state.game.reduce((acc, color) =>
+        acc.then(() => enlight(color)), Promise.resolve());
+      r()
+    });
+
+    qq.then(() => {
+      Promise.all(promises)
+        .then(() => {
+          this.setState({ isGameChaining: "finished" });
+        });
+    })
+
   }
 
   render() {
@@ -91,31 +103,27 @@ export default class SimonGame extends Component {
       <div className="simon">
         <div className="left">
           <div className={this.state.red ? "led red highlight" : "led red"}
-               disabled={this.state.isGameChaining}
                onClick={() => this.gamePick('red')}>
           </div>
           <div className={this.state.yellow ? "led yellow highlight" : "led yellow"}
-               disabled={this.state.isGameChaining}
                onClick={() => this.gamePick('yellow')}>
           </div>
         </div>
         <div className="simon-control">
           <div className="title">Simon</div>
           <div>Series {this.state.game.length}</div>
+          <h1>{this.state.isGameChaining}</h1>
           <div className="control">
             <div className="btn btn-long"
-                 disabled={this.state.isGame}
                  onClick={this.runGame}>Start
             </div>
           </div>
         </div>
         <div className="right">
           <div className={this.state.green ? "led green highlight" : "led green"}
-               disabled={this.state.isGameChaining}
                onClick={() => this.gamePick('green')}>
           </div>
           <div className={this.state.blue ? "led blue highlight" : "led blue"}
-               disabled={this.state.isGameChaining}
                onClick={() => this.gamePick('blue')}>
           </div>
         </div>
