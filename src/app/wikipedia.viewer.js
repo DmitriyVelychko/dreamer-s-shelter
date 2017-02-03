@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
+import Communication from './communication.service';
 
 export default class WikipediaViewer extends Component {
 
-  jsonp(url, callback) {
-    const callbackName = `jsonp_callback_${Math.round(100000 * Math.random())}`;
-    const script = document.createElement('script');
-    window[callbackName] = (data) => {
-      delete window[callbackName];
-      document.body.removeChild(script);
-      callback(data);
+  constructor() {
+    super();
+
+    this.state = {
+      searchText: '',
     };
 
-    script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
-    document.body.appendChild(script);
+    this.getData = this.getData.bind(this);
+    this.enterSearchText = this.enterSearchText.bind(this);
   }
 
   getWiki(data) {
@@ -47,10 +46,13 @@ export default class WikipediaViewer extends Component {
     }
   }
 
-  _getData() {
-    const inputField = document.querySelector('.input').value;
-    const url = `https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=${inputField}&callback=JSON_CALLBACK`;
-    this.jsonp(url, this.getWiki);
+  enterSearchText(event) {
+    this.setState({ searchText: event.target.value });
+  }
+
+  getData() {
+    const url = `https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=${this.state.searchText}&callback=JSON_CALLBACK`;
+    Communication.jsonp(url, this.getWiki);
   }
 
   render() {
@@ -58,13 +60,17 @@ export default class WikipediaViewer extends Component {
       <Link to="/" className="link link-home">Home</Link>
       <div className="title">Wikipedia Viewer</div>
       <a href="https://en.wikipedia.org/wiki/Special:Random"
-         target="_blank"
-         className="link">
+         target="_blank" className="link">
         Get Random Article
       </a>
       <div className="block">
-        <input className="input" />
-        <button id="search" onClick={ (e) => this._getData(e) } className="btn btn-long">Find</button>
+        <input className="input"
+               value={this.state.searchText}
+               onChange={this.enterSearchText} />
+        <button id="search"
+                onClick={this.getData}
+                className="btn btn-long">Find
+        </button>
       </div>
       <div className="wrapper hide"></div>
     </div>
