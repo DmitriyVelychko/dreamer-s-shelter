@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import Communication from './communication.service';
 
 export default class RandomQuoteMachine extends Component {
   constructor() {
@@ -19,27 +20,20 @@ export default class RandomQuoteMachine extends Component {
   }
 
   getQuote() {
-    const quoteId = Math.round(Math.random() * 1000);
-    fetch(`http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&callback=${quoteId}`)
-      .then(
-        res => res.text()
-      )
-      .then(
-        body => {
-          const data = JSON.parse(body);
-          const quote = data[0].content.replace(/[<p>,<\/p>]/g, '');
-          let twitterSlice = quote;
-          if (twitterSlice.length > 101) {
-            twitterSlice = twitterSlice.slice(0, 100);
-            twitterSlice += '... '
-          }
-          this.setState({
-            tweetHref: `https://twitter.com/intent/tweet?text=${twitterSlice}(c) ${data[0].title}`.replace(/\;/g, ''),
-            quote,
-            author: `- ${data[0].title}`
-          })
+    Communication.getRandomQuote()
+      .then((res) => {
+        const quote = res.quote;
+        let twitterSlice = quote;
+        if (twitterSlice.length > 101) {
+          twitterSlice = twitterSlice.slice(0, 100);
+          twitterSlice += '...'
         }
-      );
+        this.setState({
+          tweetHref: `https://twitter.com/intent/tweet?text=${twitterSlice} (c) ${res.author}`.replace(/\;/g, ''),
+          quote,
+          author: `- ${res.author}`
+        })
+      });
   }
 
 

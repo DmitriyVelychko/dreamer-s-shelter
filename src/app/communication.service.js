@@ -15,7 +15,7 @@ const Communication = {
     return fetch('http://ip-api.com/json')
       .then(res => res.json())
   },
-  getLocalWeather(){
+  getLocalWeather() {
     const apiKey = 'd3c2ac56d73054085acc65c023cc88e3';
     return this.getCurrentLocation()
       .then((res) => {
@@ -30,6 +30,17 @@ const Communication = {
             }
           })
       });
+  },
+  getRandomQuote() {
+    const quoteId = Math.round(Math.random() * 1000);
+    return fetch(`http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&callback=${quoteId}`)
+      .then(res => res.json())
+      .then((res) => {
+        return {
+          quote: res[0].content.replace(/[<p>,<\/p>]/g, ''),
+          author: res[0].title,
+        }
+      })
   },
 };
 
