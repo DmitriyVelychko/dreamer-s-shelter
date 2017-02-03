@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-
+import Communication from './communication.service';
 
 export default class LocalWeather extends Component {
 
@@ -17,18 +17,13 @@ export default class LocalWeather extends Component {
   }
 
   componentWillMount() {
-    this.fetchWeatherByLocation();
+    this.getLocalWeather();
   }
 
-  fetchWeatherByLocation() {
-    fetch('http://ip-api.com/json')
-      .then(res => res.text())
-      .then((body) => {
-        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${JSON.parse(body).city}&APPID=d3c2ac56d73054085acc65c023cc88e3`)
-          .then(res => res.text())
-          .then((body) => {
-            this.setWeatherCondition(JSON.parse(body))
-          })
+  getLocalWeather() {
+    Communication.getLocalWeather()
+      .then((res) => {
+        this.setWeatherCondition(JSON.parse(res))
       });
   }
 

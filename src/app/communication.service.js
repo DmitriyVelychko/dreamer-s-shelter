@@ -10,7 +10,19 @@ const Communication = {
 
     script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
     document.body.appendChild(script);
-  }
+  },
+  getCurrentLocation() {
+    return fetch('http://ip-api.com/json')
+      .then(res => res.text())
+  },
+  getLocalWeather(){
+    const apiKey = 'd3c2ac56d73054085acc65c023cc88e3';
+    this.getCurrentLocation()
+      .then((res) => {
+        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${JSON.parse(res).city}&APPID=${apiKey}`)
+          .then(res => res.text())
+      });
+  },
 };
 
 export default Communication;
