@@ -13,14 +13,22 @@ const Communication = {
   },
   getCurrentLocation() {
     return fetch('http://ip-api.com/json')
-      .then(res => res.text())
+      .then(res => res.json())
   },
   getLocalWeather(){
     const apiKey = 'd3c2ac56d73054085acc65c023cc88e3';
-    this.getCurrentLocation()
+    return this.getCurrentLocation()
       .then((res) => {
-        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${JSON.parse(res).city}&APPID=${apiKey}`)
-          .then(res => res.text())
+        return fetch(`http://api.openweathermap.org/data/2.5/weather?q=${res.city}&APPID=${apiKey}`)
+          .then(res => res.json())
+          .then((res) => {
+            return {
+              degree: Math.round(res.main.temp - 273),
+              city: res.name,
+              country: res.sys.country,
+              icon: `http://openweathermap.org/img/w/${res.weather[0].icon}.png`
+            }
+          })
       });
   },
 };

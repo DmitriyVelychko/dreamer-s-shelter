@@ -23,17 +23,8 @@ export default class LocalWeather extends Component {
   getLocalWeather() {
     Communication.getLocalWeather()
       .then((res) => {
-        this.setWeatherCondition(JSON.parse(res))
+        this.setState(res);
       });
-  }
-
-  setWeatherCondition(data) {
-    this.setState({
-      degree: Math.round(data.main.temp - 273),
-      city: data.name,
-      country: data.sys.country,
-      icon: `http://openweathermap.org/img/w/${data.weather[0].icon}.png`
-    });
   }
 
   toggleDegree() {
