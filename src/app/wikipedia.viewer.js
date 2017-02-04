@@ -10,38 +10,29 @@ export default class WikipediaViewer extends Component {
 
     this.state = {
       searchText: '',
+      articleList: [],
     };
 
     this.getData = this.getData.bind(this);
     this.enterSearchText = this.enterSearchText.bind(this);
+    this.getWiki = this.getWiki.bind(this);
+  }
+
+  static createArticle(title, text, link) {
+    return <a className="wiki-info" href={link} target="_blank">
+      <h3>{title}</h3>
+      <p>{text}</p>
+    </a>
   }
 
   getWiki(data) {
-    const articleList = document.querySelector('.wrapper');
-    articleList.innerHTML = '';
-    if (!data.query) {
-      const err = document.createElement('p');
-      err.className = 'error';
-      err.innerHTML = 'There were no results matching the query.';
-      articleList.appendChild(err);
-      return;
-    }
-
     const newData = data.query.pages;
     for (const i in newData) {
       if ({}.hasOwnProperty.call(newData, i)) {
-        const link = document.createElement('a');
-        const title = document.createElement('h3');
-        const info = document.createElement('p');
-        link.className = 'wiki-info';
-        link.href = `http://en.wikipedia.org/wiki?curid=${newData[i].pageid}`;
-        link.target = '_blank';
-        title.innerHTML = newData[i].title;
-        info.innerHTML = newData[i].extract;
-        articleList.appendChild(link);
-        articleList.className = "wrapper show";
-        link.appendChild(title);
-        link.appendChild(info);
+        const title = newData[i].title;
+        const text = newData[i].extract;
+        const link = `http://en.wikipedia.org/wiki?curid=${newData[i].pageid}`;
+        this.state.articleList.push(WikipediaViewer.createArticle(title, text, link))
       }
     }
   }
@@ -72,7 +63,9 @@ export default class WikipediaViewer extends Component {
                 className="btn btn-long">Find
         </button>
       </div>
-      <div className="wrapper hide"></div>
+      <div className="wrapper">
+        {this.state.articleList}
+      </div>
     </div>
   }
 }
