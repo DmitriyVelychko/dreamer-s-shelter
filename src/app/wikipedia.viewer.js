@@ -35,6 +35,7 @@ export default class WikipediaViewer extends Component {
         this.state.articleList.push(WikipediaViewer.createArticle(title, text, link))
       }
     }
+    this.forceUpdate()
   }
 
   enterSearchText(event) {
