@@ -1,50 +1,48 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
+import React, { Component } from "react";
+import { Link } from "react-router";
+import Communication from "./communication.service";
 
-import Communication from './communication.service';
+const ArticleList = (props) => {
+  const articles = props.articles.map((el, index) => {
+    return <a className="wiki-info" key={index} href={el.link} target="_blank">
+      <h3>{el.title}</h3>
+      <p>{el.text}</p>
+    </a>
+  });
+  return <div>{articles}</div>
+};
 
 export default class WikipediaViewer extends Component {
-
   constructor() {
     super();
 
     this.state = {
       searchText: '',
-      articleList: [],
+      articles: [],
     };
 
-    this.getData = this.getData.bind(this);
     this.enterSearchText = this.enterSearchText.bind(this);
     this.getWiki = this.getWiki.bind(this);
   }
 
-  static createArticle(title, text, link) {
-    return <a className="wiki-info" href={link} target="_blank">
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </a>
-  }
-
-  getWiki(data) {
-    const newData = data.query.pages;
-    for (const i in newData) {
-      if ({}.hasOwnProperty.call(newData, i)) {
-        const title = newData[i].title;
-        const text = newData[i].extract;
-        const link = `http://en.wikipedia.org/wiki?curid=${newData[i].pageid}`;
-        this.state.articleList.push(WikipediaViewer.createArticle(title, text, link))
-      }
-    }
-    this.forceUpdate()
+  getWiki() {
+    Communication.getWikipediaArticles(this.state.searchText)
+      .then((data) => {
+        const articles = [];
+        Object.keys(data)
+          .forEach((key) => {
+            articles.push({
+              title: data[key].title,
+              text: data[key].extract,
+              link: `http://en.wikipedia.org/wiki?curid=${data[key].pageid}`,
+            });
+          });
+        this.setState({ articles });
+      });
   }
 
   enterSearchText(event) {
     this.setState({ searchText: event.target.value });
-  }
-
-  getData() {
-    const url = `https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=${this.state.searchText}&callback=JSON_CALLBACK`;
-    Communication.jsonp(url, this.getWiki);
   }
 
   render() {
@@ -60,12 +58,12 @@ export default class WikipediaViewer extends Component {
                value={this.state.searchText}
                onChange={this.enterSearchText} />
         <button id="search"
-                onClick={this.getData}
+                onClick={this.getWiki}
                 className="btn btn-long">Find
         </button>
       </div>
       <div className="wrapper">
-        {this.state.articleList}
+        <ArticleList articles={this.state.articles} />
       </div>
     </div>
   }
